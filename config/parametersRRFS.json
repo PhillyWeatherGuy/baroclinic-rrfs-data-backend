@@ -201,11 +201,11 @@
         "latest_manifest": "{model}_{param}_manifest.json"
       }
     },
-    "total_snowfall": {
-      "id": "total_snowfall",
-      "name": "Total Snowfall",
+    "asnow": {
+      "id": "asnow",
+      "name": "Total Accumulated Snowfall",
       "file_type": "2dfld",
-      "grib_param": "weasd",
+      "grib_param": "WEASD",
       "level": "surface",
       "idx_search": ":WEASD:surface:",
       "type": "fc",
