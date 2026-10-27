@@ -815,7 +815,6 @@ def new_param_state():
         "dirty": False,
     }
 
-
 def write_param_outputs(state, param_config, stage_dir, target_date, chosen_run, init_time_iso, expected_frames, final, latest_allowed=True):
     patterns = param_config["filename_patterns"]
     pid = param_config["id"]
@@ -856,7 +855,13 @@ def write_param_outputs(state, param_config, stage_dir, target_date, chosen_run,
                 diff *= state["masks"][s]
             frame_arrays.append(normalize_array(diff, param_config))
     else:
-        frame_arrays = [state["results"][s] for s in sorted_steps]
+        # 🌟 Apply mask here for Total Accumulations
+        frame_arrays = []
+        for s in sorted_steps:
+            arr = state["results"][s]
+            if has_mask and s in state["masks"]:
+                arr = arr * state["masks"][s]
+            frame_arrays.append(normalize_array(arr, param_config))
 
     ptype_arrays = [state["ptype"].get(s) for s in sorted_steps]
     publish_latest = latest_allowed and (final or len(sorted_steps) >= LATEST_MIN_FRAMES)
