@@ -574,6 +574,23 @@ def fetch_and_process_step(target_date, chosen_run, step, param_config, model_na
             try: os.remove(grib_file)
             except Exception: pass
 
+            # 🌟 MASK PROCESSING (e.g., for CSNOW)
+            mask_arr = None
+            if "mask_param" in param_config:
+                mask_file = f"{model_name}_{pid}_mask_{step:03d}.grib2"
+                try:
+                    search_pat = param_config.get("mask_search", f":{param_config['mask_param']}:")
+                    download_rrfs_idx_slice(target_date, chosen_run, step, search_pat, file_type, mask_file)
+                    if os.path.exists(mask_file):
+                        raw_mask, _, _ = read_native_field(mask_file, param_config["mask_param"])
+                        mask_arr = (raw_mask > 0.5).astype(np.float32)
+                except Exception as e:
+                    print(f"  ⚠️ [{pid}] Mask '{param_config['mask_param']}' failed F{step:03d}: {e}")
+                finally:
+                    if os.path.exists(mask_file):
+                        try: os.remove(mask_file)
+                        except Exception: pass
+
             for src in (contour_sources or []):
                 try:
                     contour_levels.extend(extract_source_contours(src, param_config, target_date, chosen_run, step, model_name))
@@ -606,7 +623,7 @@ def fetch_and_process_step(target_date, chosen_run, step, param_config, model_na
 
             packed = pack_step(contour_levels)
             print(f"  ⚡ [{pid}] Processed RRFS F{step:03d}")
-            return step, frame_arr, packed, ptype_arr
+            return step, frame_arr, packed, ptype_arr, mask_arr
 
     except Exception as e:
         print(f"  ❌ [{pid}] Error processing F{step:03d}: {e}")
@@ -614,7 +631,7 @@ def fetch_and_process_step(target_date, chosen_run, step, param_config, model_na
             try: os.remove(grib_file)
             except Exception: pass
 
-    return step, None, None, None
+    return step, None, None, None, None
 
 
 @timed("stack")
@@ -791,6 +808,7 @@ def new_param_state():
         "results": {},
         "contours": {},
         "ptype": {},
+        "masks": {},
         "attempts": {},
         "published": {},
         "staged": {},
@@ -807,6 +825,7 @@ def write_param_outputs(state, param_config, stage_dir, target_date, chosen_run,
 
     interval_h = get_interval_hours(param_config)
     is_cumulative_diff = param_config.get("cumulative_diff", False)
+    has_mask = "mask_param" in param_config
 
     if is_cumulative_diff:
         frame_arrays = []
@@ -816,6 +835,8 @@ def write_param_outputs(state, param_config, stage_dir, target_date, chosen_run,
             current_arr = state["results"][s]
             if prev_arr is not None:
                 diff = np.maximum(0.0, current_arr - prev_arr)
+                if has_mask and s in state["masks"]:
+                    diff *= state["masks"][s]
                 running_total += diff
             frame_arrays.append(normalize_array(running_total, param_config))
             prev_arr = current_arr
@@ -831,6 +852,8 @@ def write_param_outputs(state, param_config, stage_dir, target_date, chosen_run,
                 prev_arr = state["results"][prev_s] if prev_s is not None else 0.0
 
             diff = np.maximum(0.0, state["results"][s] - prev_arr)
+            if has_mask and s in state["masks"]:
+                diff *= state["masks"][s]
             frame_arrays.append(normalize_array(diff, param_config))
     else:
         frame_arrays = [state["results"][s] for s in sorted_steps]
@@ -995,10 +1018,10 @@ def run_live_pipeline(param_keys, custom_run=None, custom_date=None):
                 k, s = jobs[fut]
                 st = states[k]
                 try:
-                    _, arr, packed, ptype_arr = fut.result()
+                    _, arr, packed, ptype_arr, mask_arr = fut.result()
                 except Exception as e:
                     print(f"  ❌ [{k}] F{s:03d} crashed: {e}", flush=True)
-                    arr = packed = ptype_arr = None
+                    arr = packed = ptype_arr = mask_arr = None
                 if arr is None:
                     st["attempts"][s] = st["attempts"].get(s, 0) + 1
                     continue
@@ -1007,6 +1030,8 @@ def run_live_pipeline(param_keys, custom_run=None, custom_date=None):
                     st["contours"][s] = packed
                 if ptype_arr is not None:
                     st["ptype"][s] = ptype_arr
+                if mask_arr is not None:
+                    st["masks"][s] = mask_arr
                 st["dirty"] = True
 
             unresolved = False
