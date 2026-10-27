@@ -797,6 +797,7 @@ def new_param_state():
         "dirty": False,
     }
 
+
 def write_param_outputs(state, param_config, stage_dir, target_date, chosen_run, init_time_iso, expected_frames, final, latest_allowed=True):
     patterns = param_config["filename_patterns"]
     pid = param_config["id"]
@@ -805,20 +806,7 @@ def write_param_outputs(state, param_config, stage_dir, target_date, chosen_run,
         return
 
     interval_h = get_interval_hours(param_config)
-    is_cumulative_diff = param_config.get("cumulative_diff", False)
-
-    if is_cumulative_diff:
-        frame_arrays = []
-        running_total = np.zeros_like(state["results"][sorted_steps[0]])
-        prev_arr = None
-        for s in sorted_steps:
-            current_arr = state["results"][s]
-            if prev_arr is not None:
-                diff = np.maximum(0.0, current_arr - prev_arr)
-                running_total += diff
-            frame_arrays.append(normalize_array(running_total, param_config))
-            prev_arr = current_arr
-    elif interval_h:
+    if interval_h:
         frame_arrays = []
         for s in sorted_steps:
             target_prev = s - interval_h
@@ -832,7 +820,7 @@ def write_param_outputs(state, param_config, stage_dir, target_date, chosen_run,
             diff = np.maximum(0.0, state["results"][s] - prev_arr)
             frame_arrays.append(normalize_array(diff, param_config))
     else:
-        frame_arrays = [normalize_array(state["results"][s], param_config) for s in sorted_steps]
+        frame_arrays = [state["results"][s] for s in sorted_steps]
 
     ptype_arrays = [state["ptype"].get(s) for s in sorted_steps]
     publish_latest = latest_allowed and (final or len(sorted_steps) >= LATEST_MIN_FRAMES)
