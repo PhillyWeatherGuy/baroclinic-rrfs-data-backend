@@ -212,7 +212,7 @@
       "unit": "in",
       "scaling": {
         "mode": "piecewise",
-        "unit_multiplier": 0.0393701,
+        "unit_multiplier": 0.393701,
         "val_points": [0.0, 1.0, 10.0, 36.0, 150.0],
         "byte_points": [0, 100, 200, 226, 255]
       },
@@ -237,7 +237,7 @@
       "unit": "in",
       "scaling": {
         "mode": "piecewise",
-        "unit_multiplier": 0.0393701,
+        "unit_multiplier": 0.393701,
         "val_points": [0.0, 1.0, 10.0, 36.0, 150.0],
         "byte_points": [0, 100, 200, 226, 255]
       },
@@ -262,7 +262,7 @@
       "unit": "in",
       "scaling": {
         "mode": "piecewise",
-        "unit_multiplier": 0.0393701,
+        "unit_multiplier": 0.393701,
         "val_points": [0.0, 1.0, 10.0, 36.0, 150.0],
         "byte_points": [0, 100, 200, 226, 255]
       },
@@ -287,7 +287,7 @@
       "unit": "in",
       "scaling": {
         "mode": "piecewise",
-        "unit_multiplier": 0.0393701,
+        "unit_multiplier": 0.393701,
         "val_points": [0.0, 1.0, 10.0, 36.0, 150.0],
         "byte_points": [0, 100, 200, 226, 255]
       },
@@ -312,7 +312,7 @@
       "unit": "in",
       "scaling": {
         "mode": "piecewise",
-        "unit_multiplier": 0.0393701,
+        "unit_multiplier": 0.393701,
         "val_points": [0.0, 1.0, 10.0, 36.0, 150.0],
         "byte_points": [0, 100, 200, 226, 255]
       },
