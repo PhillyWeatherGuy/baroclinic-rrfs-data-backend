@@ -98,11 +98,10 @@ RRFS_GRID_META = {
 }
 
 # ---------------------------------------------------------------------------
-# S3 access. Prototype bucket uses rrfs_a/.../control; switch to
 # noaa-rrfs-ops-pds + "rrfs.{date}/{run}" when the operational feed goes live.
 # ---------------------------------------------------------------------------
-RRFS_S3_BUCKET = "noaa-rrfs-pds"
-RRFS_S3_PREFIX_TEMPLATE = "rrfs_a/rrfs_a.{date}/{run}/control"
+RRFS_S3_BUCKET = "noaa-rrfs-ops-pds"
+RRFS_S3_PREFIX_TEMPLATE = "rrfs.{date}/{run}"
 
 
 def rrfs_s3_base(target_date, chosen_run):
