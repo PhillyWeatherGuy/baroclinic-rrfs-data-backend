@@ -201,18 +201,18 @@
         "latest_manifest": "{model}_{param}_manifest.json"
       }
     },
-    "snow_depth": {
-      "id": "snow_depth",
-      "name": "Snow Depth",
+    "total_snowfall": {
+      "id": "total_snowfall",
+      "name": "Total Snowfall",
       "file_type": "2dfld",
-      "grib_param": "snd",
+      "grib_param": "weasd",
       "level": "surface",
-      "idx_search": ":SNOD:surface:",
+      "idx_search": ":WEASD:surface:",
       "type": "fc",
       "unit": "in",
       "scaling": {
         "mode": "piecewise",
-        "unit_multiplier": 0.787402,
+        "unit_multiplier": 0.393701,
         "val_points": [0.0, 1.0, 10.0, 36.0, 150.0],
         "byte_points": [0, 100, 200, 226, 255]
       },
