@@ -387,13 +387,15 @@ def download_rrfs_idx_slice(target_date, chosen_run, step, search_pattern, file_
     start_byte = None
     end_byte = None
 
+    # 🌟 REMOVED 'break' HERE. We now loop through all matches and keep the LAST one.
+    # This ensures we grab the total accumulated field (e.g. 0-6 hour acc fcst) 
+    # rather than the first one (0-1 hour acc fcst).
     for i, line in enumerate(idx_lines):
         if search_pattern in line:
             parts = line.split(":")
             start_byte = int(parts[1])
             if i + 1 < len(idx_lines):
                 end_byte = int(idx_lines[i + 1].split(":")[1]) - 1
-            break
 
     if start_byte is None:
         raise ValueError(f"Pattern '{search_pattern}' not found in {prefix}.idx")
