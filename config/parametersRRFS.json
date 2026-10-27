@@ -210,6 +210,7 @@
       "idx_search": ":WEASD:surface:",
       "type": "fc",
       "unit": "in",
+      "cumulative_diff": true,
       "scaling": {
         "mode": "piecewise",
         "unit_multiplier": 0.393701,
