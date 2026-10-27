@@ -806,7 +806,20 @@ def write_param_outputs(state, param_config, stage_dir, target_date, chosen_run,
         return
 
     interval_h = get_interval_hours(param_config)
-    if interval_h:
+    is_cumulative_diff = param_config.get("cumulative_diff", False)
+
+    if is_cumulative_diff:
+        frame_arrays = []
+        running_total = np.zeros_like(state["results"][sorted_steps[0]])
+        prev_arr = None
+        for s in sorted_steps:
+            current_arr = state["results"][s]
+            if prev_arr is not None:
+                diff = np.maximum(0.0, current_arr - prev_arr)
+                running_total += diff
+            frame_arrays.append(normalize_array(running_total, param_config))
+            prev_arr = current_arr
+    elif interval_h:
         frame_arrays = []
         for s in sorted_steps:
             target_prev = s - interval_h
