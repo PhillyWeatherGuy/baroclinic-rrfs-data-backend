@@ -1,0 +1,62 @@
+name: Generate RRFS Weather Maps
+
+run-name: ${{ github.event_name == 'workflow_dispatch' && format('RRFS {0} {1}z', inputs.date, inputs.run) || 'RRFS build' }}
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Run date, YYYYMMDD (leave blank for the latest run)'
+        required: false
+        type: string
+      run:
+        description: 'Run hour, 00-23 (leave blank for the latest run)'
+        required: false
+        type: string
+
+# Only one pipeline at a time, so runs never upload over each other
+concurrency:
+  group: rrfs-pipeline
+  cancel-in-progress: false
+
+jobs:
+  build-and-plot:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+
+    - name: Install Linux System Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libeccodes-dev libeccodes-tools
+
+    - name: Install Python Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install numpy xarray pillow cfgrib contourpy rioxarray boto3 opencv-python-headless matplotlib zstandard netCDF4 huggingface_hub pyproj
+
+    - name: Run Weather Data Texture Pipeline & Upload
+      env:
+        B2_KEY_ID: ${{ secrets.B2_KEY_ID }}
+        B2_APPLICATION_KEY: ${{ secrets.B2_APPLICATION_KEY }}
+        B2_ENDPOINT: ${{ secrets.B2_ENDPOINT }}
+        HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        RUN_DATE: ${{ inputs.date }}
+        RUN_HOUR: ${{ inputs.run }}
+      run: |
+        if [ -n "$RUN_DATE" ] && [ -n "$RUN_HOUR" ]; then
+          python processRRFS.py --date "$RUN_DATE" --run "$RUN_HOUR"
+        else
+          python processRRFS.py
+        fi
