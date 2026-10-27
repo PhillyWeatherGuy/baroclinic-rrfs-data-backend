@@ -26,6 +26,14 @@ os.environ["GDAL_NUM_THREADS"] = "ALL_CPUS"
 os.environ.setdefault("TQDM_DISABLE", "1")
 sys.stdout.reconfigure(line_buffering=True)
 
+# ---------------------------------------------------------------------------
+# 🌟 MANUAL RUN OVERRIDE (For testing specific runs)
+# Set to None to use automatic latest-run detection.
+# Set both to a string (e.g., "20261027" and "12") to force a specific run.
+# ---------------------------------------------------------------------------
+MANUAL_RUN_DATE = 20261027
+MANUAL_RUN_HOUR = 12
+
 # RRFS forecast hours: the 00/06/12/18z cycles run hourly out to F84; every other cycle stops at F18.
 EXTENDED_RUNS = {"00", "06", "12", "18"}
 PREFER_EXTENDED_RUNS = False
@@ -1024,8 +1032,9 @@ def run_live_pipeline(param_keys, custom_run=None, custom_date=None):
 
 if __name__ == "__main__":
     target_params = []
-    custom_run = None
-    custom_date = None
+    # 🌟 Initialize with manual override (if set)
+    custom_run = MANUAL_RUN_HOUR
+    custom_date = MANUAL_RUN_DATE
 
     args = sys.argv[1:]
     i = 0
