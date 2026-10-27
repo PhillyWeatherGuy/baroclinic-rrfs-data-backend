@@ -1,1 +1,718 @@
-
+{
+  "model_meta": {
+    "id": "rrfs",
+    "name": "RRFS",
+    "agency": "NOAA / NCEP",
+    "resolution": "3km",
+    "s3_bucket": "noaa-rrfs-pds",
+    "grid": {
+      "type": "lambert_conformal_conus",
+      "frame_width": 1799,
+      "frame_height": 1059,
+      "dx": 3000.0,
+      "dy": 3000.0,
+      "lat_1": 38.5,
+      "lat_2": 38.5,
+      "lat_0": 38.5,
+      "lon_0": -97.5,
+      "earth_radius": 6371229.0,
+      "x0": -2699020.0,
+      "y0": -1588806.0,
+      "row_order": "south_to_north"
+    }
+  },
+  "parameters": {
+    "2t": {
+      "id": "2t",
+      "name": "2m Temperature",
+      "file_type": "2dfld",
+      "grib_param": "TMP",
+      "level": "2 m above ground",
+      "idx_search": ":TMP:2 m above ground:",
+      "type": "fc",
+      "unit": "°F",
+      "scaling": {
+        "mode": "linear",
+        "min_val": 216.4833,
+        "max_val": 327.5944
+      },
+      "contours": [
+        {
+          "id": "freezing_32f",
+          "target": 273.15,
+          "name": "32°F Freezing Line",
+          "color": "#4169E1",
+          "width": 2.0,
+          "opacity": 0.95
+        }
+      ],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_{param}_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_{param}_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "cape": {
+      "id": "cape",
+      "name": "Surface-Based CAPE",
+      "file_type": "2dfld",
+      "grib_param": "CAPE",
+      "level": "surface",
+      "idx_search": ":CAPE:surface:",
+      "type": "fc",
+      "unit": "J/kg",
+      "scaling": {
+        "mode": "linear",
+        "min_val": 0.0,
+        "max_val": 10000.0
+      },
+      "contours": [],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_{param}_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_{param}_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "tp": {
+      "id": "tp",
+      "name": "Total Accumulated Precipitation",
+      "file_type": "2dfld",
+      "grib_param": "APCP",
+      "level": "surface",
+      "idx_search": ":APCP:surface:",
+      "type": "fc",
+      "unit": "in",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 0.0393701,
+        "val_points": [0.0, 1.0, 10.0, 50.0],
+        "byte_points": [0, 100, 200, 255]
+      },
+      "contours": [],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_{param}_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_{param}_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "tp_1h": {
+      "id": "tp_1h",
+      "name": "1-Hour Accumulated Precipitation",
+      "file_type": "2dfld",
+      "grib_param": "APCP",
+      "interval_hours": 1,
+      "level": "surface",
+      "idx_search": ":APCP:surface:",
+      "type": "fc",
+      "unit": "in",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 0.0393701,
+        "val_points": [0.0, 1.0, 10.0, 50.0],
+        "byte_points": [0, 100, 200, 255]
+      },
+      "contours": [],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_{param}_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_{param}_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "tp_3h": {
+      "id": "tp_3h",
+      "name": "3-Hour Accumulated Precipitation",
+      "file_type": "2dfld",
+      "grib_param": "APCP",
+      "interval_hours": 3,
+      "level": "surface",
+      "idx_search": ":APCP:surface:",
+      "type": "fc",
+      "unit": "in",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 0.0393701,
+        "val_points": [0.0, 1.0, 10.0, 50.0],
+        "byte_points": [0, 100, 200, 255]
+      },
+      "contours": [],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_{param}_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_{param}_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "tp_6h": {
+      "id": "tp_6h",
+      "name": "6-Hour Accumulated Precipitation",
+      "file_type": "2dfld",
+      "grib_param": "APCP",
+      "interval_hours": 6,
+      "level": "surface",
+      "idx_search": ":APCP:surface:",
+      "type": "fc",
+      "unit": "in",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 0.0393701,
+        "val_points": [0.0, 1.0, 10.0, 50.0],
+        "byte_points": [0, 100, 200, 255]
+      },
+      "contours": [],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_{param}_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_{param}_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "tp_24h": {
+      "id": "tp_24h",
+      "name": "24-Hour Accumulated Precipitation",
+      "file_type": "2dfld",
+      "grib_param": "APCP",
+      "interval_hours": 24,
+      "level": "surface",
+      "idx_search": ":APCP:surface:",
+      "type": "fc",
+      "unit": "in",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 0.0393701,
+        "val_points": [0.0, 1.0, 10.0, 50.0],
+        "byte_points": [0, 100, 200, 255]
+      },
+      "contours": [],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_{param}_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_{param}_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "asnow": {
+      "id": "asnow",
+      "name": "Total Accumulated Snowfall",
+      "file_type": "2dfld",
+      "grib_param": "ASNOW",
+      "level": "surface",
+      "idx_search": ":ASNOW:surface:",
+      "type": "fc",
+      "unit": "in",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 39.3701,
+        "val_points": [0.0, 1.0, 10.0, 36.0, 150.0],
+        "byte_points": [0, 100, 200, 226, 255]
+      },
+      "contours": [],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_{param}_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_{param}_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "asnow_1h": {
+      "id": "asnow_1h",
+      "name": "1-Hour Accumulated Snowfall",
+      "file_type": "2dfld",
+      "grib_param": "ASNOW",
+      "interval_hours": 1,
+      "level": "surface",
+      "idx_search": ":ASNOW:surface:",
+      "type": "fc",
+      "unit": "in",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 39.3701,
+        "val_points": [0.0, 1.0, 10.0, 36.0, 150.0],
+        "byte_points": [0, 100, 200, 226, 255]
+      },
+      "contours": [],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_{param}_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_{param}_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "asnow_3h": {
+      "id": "asnow_3h",
+      "name": "3-Hour Accumulated Snowfall",
+      "file_type": "2dfld",
+      "grib_param": "ASNOW",
+      "interval_hours": 3,
+      "level": "surface",
+      "idx_search": ":ASNOW:surface:",
+      "type": "fc",
+      "unit": "in",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 39.3701,
+        "val_points": [0.0, 1.0, 10.0, 36.0, 150.0],
+        "byte_points": [0, 100, 200, 226, 255]
+      },
+      "contours": [],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_{param}_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_{param}_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "asnow_6h": {
+      "id": "asnow_6h",
+      "name": "6-Hour Accumulated Snowfall",
+      "file_type": "2dfld",
+      "grib_param": "ASNOW",
+      "interval_hours": 6,
+      "level": "surface",
+      "idx_search": ":ASNOW:surface:",
+      "type": "fc",
+      "unit": "in",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 39.3701,
+        "val_points": [0.0, 1.0, 10.0, 36.0, 150.0],
+        "byte_points": [0, 100, 200, 226, 255]
+      },
+      "contours": [],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_{param}_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_{param}_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "asnow_24h": {
+      "id": "asnow_24h",
+      "name": "24-Hour Accumulated Snowfall",
+      "file_type": "2dfld",
+      "grib_param": "ASNOW",
+      "interval_hours": 24,
+      "level": "surface",
+      "idx_search": ":ASNOW:surface:",
+      "type": "fc",
+      "unit": "in",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 39.3701,
+        "val_points": [0.0, 1.0, 10.0, 36.0, 150.0],
+        "byte_points": [0, 100, 200, 226, 255]
+      },
+      "contours": [],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_{param}_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_{param}_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "refc": {
+      "id": "refc",
+      "name": "Composite Reflectivity",
+      "file_type": "2dfld",
+      "grib_param": "REFC",
+      "level": "entire atmosphere",
+      "idx_search": ":REFC:entire atmosphere:",
+      "type": "fc",
+      "unit": "dBZ",
+      "ptype_sources": {
+        "rain": ":CRAIN:surface:",
+        "frzr": ":CFRZR:surface:",
+        "sleet": ":CICEP:surface:",
+        "snow": ":CSNOW:surface:"
+      },
+      "scaling": {
+        "mode": "linear",
+        "min_val": 0.0,
+        "max_val": 75.0
+      },
+      "contours": [],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_{param}_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_{param}_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "pwat": {
+      "id": "pwat",
+      "name": "Precipitable Water",
+      "file_type": "2dfld",
+      "grib_param": "PWAT",
+      "level": "entire atmosphere",
+      "idx_search": ":PWAT:",
+      "type": "fc",
+      "unit": "in",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 0.0393701,
+        "val_points": [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 4.0],
+        "byte_points": [0, 32, 64, 96, 128, 160, 192, 255]
+      },
+      "contours": [],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_{param}_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_{param}_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "pva": {
+      "id": "pva",
+      "name": "500mb Height & Vort",
+      "file_type": "prslev",
+      "grib_param": "ABSV",
+      "level": "500 mb",
+      "idx_search": ":ABSV:500 mb:",
+      "type": "fc",
+      "unit": "10^-5 s^-1",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 100000.0,
+        "val_points": [0.0, 3.0, 80.0],
+        "byte_points": [0, 30, 107]
+      },
+      "contour_source": {
+        "file_type": "prslev",
+        "grib_param": "HGT",
+        "level": "500 mb",
+        "idx_search": ":HGT:500 mb:",
+        "unit": "dam"
+      },
+      "contours_settings": {
+        "blur_kernel": [3, 3],
+        "blur_sigma": 0.9,
+        "coarsen_stride": 2
+      },
+      "contours": [
+        {
+          "id": "z500_6dam",
+          "name": "500mb Height",
+          "color": "#000000",
+          "width": 1.6,
+          "opacity": 0.9,
+          "interval": 6.0,
+          "dynamic": true,
+          "unit": "dam"
+        }
+      ],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_z500_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_z500_contours.json",
+        "run_manifest": "{model}_z500_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_z500_manifest.json"
+      }
+    },
+    "z500_anom": {
+      "id": "z500_anom",
+      "name": "500mb Height Anomaly",
+      "file_type": "prslev",
+      "grib_param": "HGT",
+      "level": "500 mb",
+      "idx_search": ":HGT:500 mb:",
+      "climatology_level": 500,
+      "type": "fc",
+      "unit": "m",
+      "scaling": {
+        "mode": "linear",
+        "min_val": -500.0,
+        "max_val": 500.0
+      },
+      "contours": [],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_z500_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_z500_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "w250": {
+      "id": "w250",
+      "name": "250mb Wind & Height",
+      "file_type": "prslev",
+      "grib_param": ["u", "v"],
+      "level": "250 mb",
+      "idx_search_u": ":UGRD:250 mb:",
+      "idx_search_v": ":VGRD:250 mb:",
+      "type": "fc",
+      "unit": "kts",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 1.943844,
+        "val_points": [0.0, 50.0, 75.0, 100.0, 125.0, 150.0, 175.0, 200.0, 250.0],
+        "byte_points": [0, 40, 75, 110, 145, 180, 210, 235, 255]
+      },
+      "contour_source": {
+        "file_type": "prslev",
+        "grib_param": "HGT",
+        "level": "250 mb",
+        "idx_search": ":HGT:250 mb:",
+        "unit": "dam"
+      },
+      "contours_settings": {
+        "blur_kernel": [3, 3],
+        "blur_sigma": 0.9,
+        "coarsen_stride": 2
+      },
+      "contours": [
+        {
+          "id": "z250_6dam",
+          "name": "250mb Height",
+          "color": "#000000",
+          "width": 1.6,
+          "opacity": 0.9,
+          "interval": 6.0,
+          "dynamic": true,
+          "unit": "dam"
+        }
+      ],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_z250_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_z250_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "w300": {
+      "id": "w300",
+      "name": "300mb Wind & Height",
+      "file_type": "prslev",
+      "grib_param": ["u", "v"],
+      "level": "300 mb",
+      "idx_search_u": ":UGRD:300 mb:",
+      "idx_search_v": ":VGRD:300 mb:",
+      "type": "fc",
+      "unit": "kts",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 1.943844,
+        "val_points": [0.0, 50.0, 75.0, 100.0, 125.0, 150.0, 175.0, 200.0, 250.0],
+        "byte_points": [0, 40, 75, 110, 145, 180, 210, 235, 255]
+      },
+      "contour_source": {
+        "file_type": "prslev",
+        "grib_param": "HGT",
+        "level": "300 mb",
+        "idx_search": ":HGT:300 mb:",
+        "unit": "dam"
+      },
+      "contours_settings": {
+        "blur_kernel": [3, 3],
+        "blur_sigma": 0.9,
+        "coarsen_stride": 2
+      },
+      "contours": [
+        {
+          "id": "z300_6dam",
+          "name": "300mb Height",
+          "color": "#000000",
+          "width": 1.6,
+          "opacity": 0.9,
+          "interval": 6.0,
+          "dynamic": true,
+          "unit": "dam"
+        }
+      ],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_z300_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_z300_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "w500": {
+      "id": "w500",
+      "name": "500mb Wind & Height",
+      "file_type": "prslev",
+      "grib_param": ["u", "v"],
+      "level": "500 mb",
+      "idx_search_u": ":UGRD:500 mb:",
+      "idx_search_v": ":VGRD:500 mb:",
+      "type": "fc",
+      "unit": "kts",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 1.943844,
+        "val_points": [0.0, 50.0, 75.0, 100.0, 125.0, 150.0, 175.0, 200.0, 250.0],
+        "byte_points": [0, 40, 75, 110, 145, 180, 210, 235, 255]
+      },
+      "contours": [],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_z500_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_z500_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "w700": {
+      "id": "w700",
+      "name": "700mb Wind & Height",
+      "file_type": "prslev",
+      "grib_param": ["u", "v"],
+      "level": "700 mb",
+      "idx_search_u": ":UGRD:700 mb:",
+      "idx_search_v": ":VGRD:700 mb:",
+      "type": "fc",
+      "unit": "kts",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 1.943844,
+        "val_points": [0.0, 50.0, 75.0, 100.0, 125.0, 150.0, 175.0, 200.0, 250.0],
+        "byte_points": [0, 40, 75, 110, 145, 180, 210, 235, 255]
+      },
+      "contour_source": {
+        "file_type": "prslev",
+        "grib_param": "HGT",
+        "level": "700 mb",
+        "idx_search": ":HGT:700 mb:",
+        "unit": "dam"
+      },
+      "contours_settings": {
+        "blur_kernel": [3, 3],
+        "blur_sigma": 0.9,
+        "coarsen_stride": 2
+      },
+      "contours": [
+        {
+          "id": "z700_3dam",
+          "name": "700mb Height",
+          "color": "#000000",
+          "width": 1.6,
+          "opacity": 0.9,
+          "interval": 3.0,
+          "dynamic": true,
+          "unit": "dam"
+        }
+      ],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_z700_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_z700_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "w850": {
+      "id": "w850",
+      "name": "850mb Wind & Height",
+      "file_type": "prslev",
+      "grib_param": ["u", "v"],
+      "level": "850 mb",
+      "idx_search_u": ":UGRD:850 mb:",
+      "idx_search_v": ":VGRD:850 mb:",
+      "type": "fc",
+      "unit": "kts",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 1.943844,
+        "val_points": [0.0, 50.0, 75.0, 100.0, 125.0, 150.0, 175.0, 200.0, 250.0],
+        "byte_points": [0, 40, 75, 110, 145, 180, 210, 235, 255]
+      },
+      "contour_source": {
+        "file_type": "prslev",
+        "grib_param": "HGT",
+        "level": "850 mb",
+        "idx_search": ":HGT:850 mb:",
+        "unit": "dam"
+      },
+      "contours_settings": {
+        "blur_kernel": [3, 3],
+        "blur_sigma": 0.9,
+        "coarsen_stride": 2
+      },
+      "contours": [
+        {
+          "id": "z850_3dam",
+          "name": "850mb Height",
+          "color": "#000000",
+          "width": 1.6,
+          "opacity": 0.9,
+          "interval": 3.0,
+          "dynamic": true,
+          "unit": "dam"
+        }
+      ],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_z850_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_z850_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    },
+    "w925": {
+      "id": "w925",
+      "name": "925mb Wind & Height",
+      "file_type": "prslev",
+      "grib_param": ["u", "v"],
+      "level": "925 mb",
+      "idx_search_u": ":UGRD:925 mb:",
+      "idx_search_v": ":VGRD:925 mb:",
+      "type": "fc",
+      "unit": "kts",
+      "scaling": {
+        "mode": "piecewise",
+        "unit_multiplier": 1.943844,
+        "val_points": [0.0, 50.0, 75.0, 100.0, 125.0, 150.0, 175.0, 200.0, 250.0],
+        "byte_points": [0, 40, 75, 110, 145, 180, 210, 235, 255]
+      },
+      "contour_source": {
+        "file_type": "prslev",
+        "grib_param": "HGT",
+        "level": "925 mb",
+        "idx_search": ":HGT:925 mb:",
+        "unit": "dam"
+      },
+      "contours_settings": {
+        "blur_kernel": [3, 3],
+        "blur_sigma": 0.9,
+        "coarsen_stride": 2
+      },
+      "contours": [
+        {
+          "id": "z925_3dam",
+          "name": "925mb Height",
+          "color": "#000000",
+          "width": 1.6,
+          "opacity": 0.9,
+          "interval": 3.0,
+          "dynamic": true,
+          "unit": "dam"
+        }
+      ],
+      "filename_patterns": {
+        "volume": "{model}_{param}_{date}_{run}z_volume_{chunk_idx}.bin",
+        "run_contours": "{model}_z925_{date}_{run}z_contours.json",
+        "latest_contours": "{model}_z925_contours.json",
+        "run_manifest": "{model}_{param}_{date}_{run}z_manifest.json",
+        "latest_manifest": "{model}_{param}_manifest.json"
+      }
+    }
+  }
+}
