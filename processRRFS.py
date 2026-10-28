@@ -31,8 +31,8 @@ sys.stdout.reconfigure(line_buffering=True)
 # Set to None to use automatic latest-run detection.
 # Set both to a string (e.g., "20261027" and "12") to force a specific run.
 # ---------------------------------------------------------------------------
-MANUAL_RUN_DATE = 20261027
-MANUAL_RUN_HOUR = 12
+MANUAL_RUN_DATE = None
+MANUAL_RUN_HOUR = None
 
 # RRFS forecast hours: the 00/06/12/18z cycles run hourly out to F84; every other cycle stops at F18.
 EXTENDED_RUNS = {"00", "06", "12", "18"}
